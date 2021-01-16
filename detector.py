@@ -1,5 +1,5 @@
 import numpy as np
-import cv2
+import cv2,util, colorsys, random
 import tensorflow as tf
 from tensorflow.python import saved_model
 # import os
@@ -34,3 +34,25 @@ def yolo_detector(original_image):
     )
     pred_bbox = [boxes.numpy(), scores.numpy(), classes.numpy(), valid_detections.numpy()]
     return pred_bbox
+
+def yolo_init():
+    # load parameters
+    input_size = 416
+    weights = "./tensorflow-yolov4-tflite/checkpoints/yolov4-416/" # path to the yolo weights
+    iou = 0.5 # IOU threshold
+    score = 0.25 # prediction score threshold
+
+    # load model
+    saved_model_loaded = saved_model.load(weights, tags=[saved_model.tag_constants.SERVING])
+    infer = saved_model_loaded.signatures['serving_default']
+
+    # init classes and colors
+    classes = util.read_class_names("./tensorflow-yolov4-tflite/data/classes/coco.names")
+    num_classes = len(classes)
+    hsv_tuples = [(1.0 * x / num_classes, 1., 1.) for x in range(num_classes)]
+    colors = list(map(lambda x: colorsys.hsv_to_rgb(*x), hsv_tuples))
+    colors = list(map(lambda x: (int(x[0] * 255), int(x[1] * 255), int(x[2] * 255)), colors))
+    random.seed(0)
+    random.shuffle(colors)
+    random.seed(None)
+    return classes, colors

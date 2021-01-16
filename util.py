@@ -21,7 +21,7 @@ def capture_screen():
         img = Image.frombytes("RGB", sct_img.size, sct_img.bgra, "raw", "BGRX")
         img = np.asarray(img)
         pred_bbox = detector.yolo_detector(np.asarray(img))
-    return pred_bbox
+    return pred_bbox, img
 
 def draw_bbox(image, bboxes):
     classes = read_class_names("./tensorflow-yolov4-tflite/data/classes/coco.names")
