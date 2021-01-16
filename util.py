@@ -2,7 +2,7 @@ from mss.linux import MSS as mss
 # uncomment the following line if you are using windows
 # from mss.windows import MSS as mss
 import numpy as np
-import yolo_detector
+import detector
 from PIL import Image
 import random, colorsys
 
@@ -20,7 +20,7 @@ def capture_screen():
         # Create the Image
         img = Image.frombytes("RGB", sct_img.size, sct_img.bgra, "raw", "BGRX")
         img = np.asarray(img)
-        pred_bbox = yolo_detector(np.asarray(img))
+        pred_bbox = detector.yolo_detector(np.asarray(img))
     return pred_bbox
 
 def draw_bbox(image, bboxes):

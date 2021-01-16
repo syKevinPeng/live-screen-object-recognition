@@ -2,7 +2,9 @@ import numpy as np
 import cv2
 import tensorflow as tf
 from tensorflow.python import saved_model
-
+# import os
+# print(os.environ["CUDA_VISIBLE_DEVICES"])
+# os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 # RGB img input
 def yolo_detector(original_image):
     input_size = 416
