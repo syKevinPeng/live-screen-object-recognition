@@ -12,7 +12,7 @@ class FullScreen(object):
         #     win_width, win_height))
         self.window.geometry("2560x1440+0+0")
         self.window.wait_visibility(window)
-        self.window.wm_attributes("-alpha", 1)
+        self.window.wm_attributes("-alpha", .3)
         # self.window.wm_attributes("-fullscreen", True)
 
         self.canvas = Canvas(self.window, width= win_width, height = win_height)
@@ -48,7 +48,7 @@ class FullScreen(object):
             bbox_color = colors[class_ind]
             bbox_thick = int(0.6 * (image_h + image_w) / 600)
             bbox_mess = '%s: %.2f' % (classes[class_ind], score)
-            print([coord[1], coord[0], coord[3], coord[2]])
+            # print([coord[1], coord[0], coord[3], coord[2]])
             self.canvas.create_rectangle(coord[1], coord[0], coord[3], coord[2], width=bbox_thick, outline=util.rgb_to_hex(bbox_color))
         self.canvas.pack()
 
