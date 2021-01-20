@@ -9,15 +9,15 @@ class FullScreen(object):
         win_width = self.window.winfo_screenwidth()
         win_height = self.window.winfo_screenheight()
         # self.window.geometry("{0}x{1}+0+0".format(
-        #     self.window.winfo_screenwidth(), self.window.winfo_screenheight()))
+        #     win_width, win_height))
         self.window.geometry("2560x1440+0+0")
         self.window.wait_visibility(window)
-        # self.window.wm_attributes("-alpha", 0.5)
+        self.window.wm_attributes("-alpha", 1)
         # self.window.wm_attributes("-fullscreen", True)
 
         self.canvas = Canvas(self.window, width= win_width, height = win_height)
-        self.canvas.create_text(win_width/2, win_height/2,
-                                font = ("Purisa", 120),
+        self.canvas.create_text(win_width//2, win_height//2,
+                                font = ("Purisa", 50),
                                 text = "Loading Libraries")
         self.canvas.pack()
         self.window.update()
@@ -36,7 +36,7 @@ class FullScreen(object):
         random.seed(None)
 
         for i in range(num_boxes[0]):
-            if int(out_classes[0][i]) < 0 or int(out_classes[0][i]) > num_classes: continue
+            # if int(out_classes[0][i]) < 0 or int(out_classes[0][i]) > num_classes: continue
             coord = out_boxes[0][i]
             coord[0] = int(coord[0] * image_h)
             coord[2] = int(coord[2] * image_h)
@@ -48,8 +48,10 @@ class FullScreen(object):
             bbox_color = colors[class_ind]
             bbox_thick = int(0.6 * (image_h + image_w) / 600)
             bbox_mess = '%s: %.2f' % (classes[class_ind], score)
+            print([coord[1], coord[0], coord[3], coord[2]])
             self.canvas.create_rectangle(coord[1], coord[0], coord[3], coord[2], width=bbox_thick, outline=util.rgb_to_hex(bbox_color))
         self.canvas.pack()
+
 
     def clean_canvas(self):
         self.canvas.delete("all")
@@ -58,6 +60,4 @@ class FullScreen(object):
     def draw_background(self, img):
         my_img = ImageTk.PhotoImage(image=Image.fromarray(img))
         self.canvas.create_image(0,0, anchor=tk.NW, image=my_img)
-        self.canvas.pack()
-        print("yes")
 

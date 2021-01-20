@@ -2,9 +2,9 @@ from mss.linux import MSS as mss
 # uncomment the following line if you are using windows
 # from mss.windows import MSS as mss
 import numpy as np
-import detector
+# import detector
 from PIL import Image
-import random, colorsys
+# import cv2
 
 def read_class_names(class_file_name):
     names = {}
@@ -19,11 +19,12 @@ def capture_screen():
     horizontal_cut = 70
 
     with mss() as sct:
-        sct_img = sct.grab(sct.monitors[1])
+        sct_img = sct.grab(sct.monitors[-1])
 
         # Create captured image and return it as np array
         img = Image.frombytes("RGB", sct_img.size, sct_img.bgra, "raw", "BGRX")
         img = np.asarray(img)[vertical_cut:,horizontal_cut:]
+        # print("Got screenshot")
     return img
 # convert rbg color to color hex which is accepted by pyinter
 def rgb_to_hex(rgb):
