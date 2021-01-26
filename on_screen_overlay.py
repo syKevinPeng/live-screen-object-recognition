@@ -8,15 +8,15 @@ class FullScreen(object):
         self.window = window
         win_width = self.window.winfo_screenwidth()
         win_height = self.window.winfo_screenheight()
-        # self.window.geometry("{0}x{1}+0+0".format(
-        #     win_width, win_height))
-        self.window.geometry("2560x1440+0+0")
+        self.window.geometry("{0}x{1}+0+0".format(
+            int(win_width/2), win_height))
+        # self.window.geometry("2560x1440+0+0")
         self.window.wait_visibility(window)
-        self.window.wm_attributes("-alpha", .3)
+        # self.window.wm_attributes("-alpha", .3)
         # self.window.wm_attributes("-fullscreen", True)
 
         self.canvas = Canvas(self.window, width= win_width, height = win_height)
-        self.canvas.create_text(win_width//2, win_height//2,
+        self.canvas.create_text(win_width//4, win_height//2,
                                 font = ("Purisa", 50),
                                 text = "Loading Libraries")
         self.canvas.pack()
@@ -59,5 +59,6 @@ class FullScreen(object):
     # update background image. Input is in np array format.
     def draw_background(self, img):
         my_img = ImageTk.PhotoImage(image=Image.fromarray(img))
-        self.canvas.create_image(0,0, anchor=tk.NW, image=my_img)
+        self.canvas.create_image(0,0, image=my_img)
+        self.canvas.pack()
 

@@ -55,6 +55,11 @@ class Server:
         pred = self.yolo.detect(shm_img_np)
 
         shm_img_buf.close()
+        del shm_img_buf, shm_img_np
+
+        if pred.nbytes == 0:
+            print(f'{ts()}: pred.nbytes is {pred.nbytes}!')
+            print(f'{ts()}: pred.shape  is {pred.shape}!')
 
         self.shm_pred_buf = shared_memory.SharedMemory(_SHM_PRED, create=True, size=pred.nbytes)
         shm_pred_np = np.ndarray(pred.shape, dtype=pred.dtype, buffer=self.shm_pred_buf.buf)
@@ -73,6 +78,7 @@ class Server:
                     next_conn = False
                     data = b''
                     while ...:
+                        conn.settimeout(10)
                         tmp = conn.recv(512)
                         data += tmp
                         try:

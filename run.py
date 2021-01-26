@@ -40,6 +40,7 @@ class Client:
         self.window.bind("<Escape>", lambda x: self.window.destroy())
 
         self.start()
+        self.window.destroy()
 
     def process_bbox(self, value):
         boxes = value[:, :, 0:4]
@@ -97,6 +98,7 @@ class Client:
             self.app.clean_canvas()  # clean the bbox from previous frame
             # app.draw_background(image)
             self.app.draw_box(bbox, image)
+            # self.app.draw_background(image)
             self.window.update_idletasks()
             self.window.update()
 

@@ -2,7 +2,7 @@ from mss.linux import MSS as mss
 # uncomment the following line if you are using windows
 # from mss.windows import MSS as mss
 import numpy as np
-# import detector
+import tkinter as tk
 from PIL import Image
 # import cv2
 
@@ -16,8 +16,11 @@ def read_class_names(class_file_name):
 def capture_screen():
     # customized value that crop the top and side bar
     vertical_cut = 25
-    horizontal_cut = 70
-
+    # horizontal_cut = 70
+    dum = tk.Tk()
+    screen_width = dum.winfo_screenwidth()
+    horizontal_cut = int(screen_width/2)
+    dum.withdraw()
     with mss() as sct:
         sct_img = sct.grab(sct.monitors[-1])
 
