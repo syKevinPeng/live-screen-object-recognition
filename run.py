@@ -11,15 +11,10 @@ import tensorflow as tf
 import on_screen_overlay
 import util
 
-try:
-    from multiprocessing import shared_memory
-except:
-    ...
+
 _IOU = 0.5
 _SCORE = 0.25
 _SOCKET_PATH = '/tmp/yolo-server'
-_SHM_IMG = 'yolo-img'
-_SHM_PRED = 'yolo-predict'
 
 
 def ts():
@@ -32,7 +27,6 @@ class Client:
         self.conn.connect(_SOCKET_PATH)
         print(f'{ts()}: Connected to {_SOCKET_PATH}')
 
-        self.shm_img_buf = None
         self.last_time = time.time_ns()
 
         self.window = tk.Tk()
@@ -59,22 +53,14 @@ class Client:
         return pred_bbox
 
     def client(self, image: np.ndarray):
-        if self.shm_img_buf is not None:
-            self.shm_img_buf.close()
-            self.shm_img_buf.unlink()
+        img_pkl = pickle.dumps(image)
 
-        self.shm_img_buf = shared_memory.SharedMemory(_SHM_IMG, create=True, size=image.nbytes)
-        shm_img_np = np.ndarray(image.shape, dtype=image.dtype, buffer=self.shm_img_buf.buf)
-        shm_img_np[:] = image[:]
-
-        shape_dtype = pickle.dumps((image.shape, image.dtype))
-
-        print(f'{ts()}: Sending {len(shape_dtype)} bytes')
-        self.conn.sendall(shape_dtype)
+        print(f'{ts()}: Sending {len(img_pkl)} bytes')
+        self.conn.sendall(img_pkl)
 
         data = b''
         while ...:
-            tmp = self.conn.recv(512)
+            tmp = self.conn.recv(2097152)
             data += tmp
             try:
                 unpickled = pickle.loads(data)
@@ -83,10 +69,7 @@ class Client:
             except:
                 ...
 
-        shm_pred_buf = shared_memory.SharedMemory(name=_SHM_PRED)
-        shm_pred_np = np.ndarray(unpickled[0], dtype=unpickled[1], buffer=shm_pred_buf.buf)
-
-        bbox = self.process_bbox(shm_pred_np)
+        bbox = self.process_bbox(unpickled)
 
         return bbox
 
@@ -110,12 +93,5 @@ class Client:
         self.conn.close()
 
 
-def self_check():
-    if sys.version < '3.8':
-        print(f'{ts()}: SharedMemory feature requires Py 3.8+', file=sys.stderr)
-        exit(1)
-
-
 if __name__ == "__main__":
-    self_check()
     Client()
