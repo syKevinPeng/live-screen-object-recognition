@@ -1,3 +1,6 @@
 [submodule "tensorflow-yolov4-tflite"]
 	path = tensorflow-yolov4-tflite
 	url = git@github.com:sneheshs/tensorflow-yolov4-tflite.git
+[submodule "detectron2-ResNeSt"]
+	path = detectron2-ResNeSt
+	url = git@github.com:syKevinPeng/detectron2-ResNeSt.git

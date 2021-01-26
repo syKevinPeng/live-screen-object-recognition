@@ -2,11 +2,10 @@ import os
 import pickle
 import socket
 import traceback
-
 import numpy as np
-
 from detectors import YoloDetector
-from run import ts, _SOCKET_PATH
+from client import _SOCKET_PATH
+from util import ts
 
 
 class Server:
