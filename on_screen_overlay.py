@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import Canvas, Label
 from PIL import Image, ImageTk
-import util, colorsys,random
+import util, colorsys,random, math
 
 class FullScreen(object):
     def __init__(self, window, **kwargs):
@@ -50,6 +50,7 @@ class FullScreen(object):
             bbox_mess = '%s: %.2f' % (classes[class_ind], score)
             # print([coord[1], coord[0], coord[3], coord[2]])
             self.canvas.create_rectangle(coord[1], coord[0], coord[3], coord[2], width=bbox_thick, outline=util.rgb_to_hex(bbox_color))
+            self.draw_text(bbox_mess,[coord[1], coord[0], coord[3], coord[2]])
         self.canvas.pack()
 
 
@@ -63,3 +64,13 @@ class FullScreen(object):
         self.window.one = my_img
         self.canvas.pack()
 
+    def draw_text(self, message, bbox):
+        padding = 20 # in pixel
+        x1, y1, x2, y2 = bbox
+        pos_x = math.ceil(x1)
+        if (math.ceil(y1) - padding) < 0:
+            pos_y = math.ceil(y2) + padding
+        else:
+            pos_y = math.ceil(y1) - padding
+        self.canvas.create_text(pos_x, pos_y,anchor=tk.NW, font = "Times 15", text = message)
+        # self.canvas.pack()

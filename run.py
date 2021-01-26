@@ -82,10 +82,6 @@ class Client:
             # app.draw_background(image)
             self.app.draw_background(image)
             self.app.draw_box(bbox, image)
-            # image = ImageTk.PhotoImage(image=Image.fromarray(image))
-            # background = tk.Label(image = image)
-            # background.place(0,0)
-
 
             self.window.update_idletasks()
             self.window.update()
