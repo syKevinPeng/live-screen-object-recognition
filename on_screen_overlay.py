@@ -59,6 +59,7 @@ class FullScreen(object):
     # update background image. Input is in np array format.
     def draw_background(self, img):
         my_img = ImageTk.PhotoImage(image=Image.fromarray(img))
-        self.canvas.create_image(0,0, image=my_img)
+        self.canvas.create_image(0,0,anchor=tk.NW, image=my_img)
+        self.window.one = my_img
         self.canvas.pack()
 

@@ -40,28 +40,31 @@ class Server:
         while ...:
             conn, addr = self.skt.accept()
             try:
-                print(f"{ts()}: New connection!")
-                while ...:
-                    print(f"{ts()}: New request!")
-                    next_conn = False
-                    data = b''
+                with conn:
+                    print(f"{ts()}: New connection!")
                     while ...:
-                        conn.settimeout(20)
-                        tmp = conn.recv(2097152)
-                        data += tmp
-                        try:
-                            img_np = pickle.loads(data)
-                            print(f'{ts()}: Received {len(data)} bytes!')
+                        print(f"{ts()}: New request!")
+                        next_conn = False
+                        data = b''
+                        while ...:
+                            conn.settimeout(10)
+                            tmp = conn.recv(2097152)
+                            data += tmp
+                            try:
+                                img_np = pickle.loads(data)
+                                print(f'{ts()}: Received {len(data)} bytes!')
+                                break
+                            except:
+                                ...
+                            if not tmp:
+                                next_conn = True
+                            if next_conn:
+                                break
+                        if next_conn:
                             break
-                        except:
-                            ...
-                        if not tmp:
-                            next_conn = True
-                    if next_conn:
-                        break
-                    processed = self.process(img_np)
-                    print(f'{ts()}: Sending {len(processed)} bytes!')
-                    conn.sendall(processed)
+                        processed = self.process(img_np)
+                        print(f'{ts()}: Sending {len(processed)} bytes!')
+                        conn.sendall(processed)
             except:
                 traceback.print_exc()
             print(f'{ts()}: ===================================')

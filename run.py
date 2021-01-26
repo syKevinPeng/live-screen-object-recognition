@@ -1,7 +1,7 @@
 import datetime
 import pickle
 import socket
-import sys
+from PIL import Image, ImageTk
 import time
 import tkinter as tk
 
@@ -80,10 +80,16 @@ class Client:
             # print(f"{ts()}: bbox getting form pipe:\n", bbox[0])
             self.app.clean_canvas()  # clean the bbox from previous frame
             # app.draw_background(image)
+            self.app.draw_background(image)
             self.app.draw_box(bbox, image)
-            # self.app.draw_background(image)
+            # image = ImageTk.PhotoImage(image=Image.fromarray(image))
+            # background = tk.Label(image = image)
+            # background.place(0,0)
+
+
             self.window.update_idletasks()
             self.window.update()
+
 
             t = time.time_ns()
             print(f'{ts()}: FPS: {1e9 / (t - self.last_time)}')

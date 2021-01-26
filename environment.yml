@@ -1,8 +1,8 @@
 # run: conda env create --file environment.yml
 name: live-detection
 dependencies:
-  - python < 3.8
-  - python-mss
+  - python < 3.9
+  - pyautogui
   - numpy
   - pillow
   - pyqt
