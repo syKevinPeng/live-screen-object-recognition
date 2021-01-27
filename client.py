@@ -1,4 +1,3 @@
-import detectors
 import pickle
 import socket
 import time

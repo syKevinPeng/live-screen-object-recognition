@@ -3,13 +3,13 @@ import pickle
 import socket
 import traceback
 import numpy as np
-from detectors import YoloDetector
+
 from client import _SOCKET_PATH
 from util import ts
 
 
 class Server:
-    def __init__(self):
+    def __init__(self, mode):
         if os.path.exists(_SOCKET_PATH):
             os.remove(_SOCKET_PATH)
 
@@ -17,7 +17,14 @@ class Server:
         self.skt.bind(_SOCKET_PATH)
         self.skt.listen()
 
-        self.yolo = YoloDetector()
+        if mode == "yolo":
+            from yolo_detectors import YoloDetector
+            self.detector = YoloDetector()
+        elif mode == "resnest":
+            from resnest_detector import ResnestDetector
+            self.detector = ResnestDetector()
+        else:
+            raise Exception("incorrect model type")
 
         print()
         print(f'{ts()}: ===================================')
@@ -30,7 +37,7 @@ class Server:
     def process(self, img_np: np.ndarray) -> bytes:
         print(f"{ts()}: Processing data begin ...")
 
-        pred = self.yolo.detect(img_np)
+        pred = self.detector.detect(image = img_np)
 
         print(f"{ts()}: Processing data done ...")
         return pickle.dumps(pred)
@@ -70,4 +77,4 @@ class Server:
 
 
 if __name__ == '__main__':
-    Server()
+    Server("resnest")

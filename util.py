@@ -29,3 +29,10 @@ def rgb_to_hex(rgb):
 
 def ts():
     return datetime.datetime.now().isoformat()
+
+# convert a list of tensor to a list of numpy array
+def convert_tensor_to_np(tensor_list):
+    return_list = []
+    for tensor in tensor_list:
+        return_list.append(tensor.detach().cpu().numpy())
+    return return_list

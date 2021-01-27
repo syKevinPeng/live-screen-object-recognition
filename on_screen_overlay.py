@@ -24,6 +24,7 @@ class FullScreen(object):
 
     def draw_box(self, bbox, image):
         out_boxes, out_scores, out_classes, num_boxes = bbox
+        print(num_boxes)
         image_h, image_w, _ = image.shape
         classes = util.read_class_names("./tensorflow-yolov4-tflite/data/classes/coco.names")
         num_classes = len(classes)
@@ -35,16 +36,12 @@ class FullScreen(object):
         random.shuffle(colors)
         random.seed(None)
 
-        for i in range(num_boxes[0]):
+        for i in range(num_boxes):
             # if int(out_classes[0][i]) < 0 or int(out_classes[0][i]) > num_classes: continue
-            coord = out_boxes[0][i]
-            coord[0] = int(coord[0] * image_h)
-            coord[2] = int(coord[2] * image_h)
-            coord[1] = int(coord[1] * image_w)
-            coord[3] = int(coord[3] * image_w)
-
-            score = out_scores[0][i]
-            class_ind = int(out_classes[0][i])
+            coord = out_boxes[i]
+            print(coord)
+            score = out_scores[i]
+            class_ind = int(out_classes[i])
             bbox_color = colors[class_ind]
             bbox_thick = int(0.6 * (image_h + image_w) / 600)
             bbox_mess = '%s: %.2f' % (classes[class_ind], score)
