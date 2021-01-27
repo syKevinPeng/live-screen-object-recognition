@@ -39,15 +39,14 @@ class FullScreen(object):
         for i in range(num_boxes):
             # if int(out_classes[0][i]) < 0 or int(out_classes[0][i]) > num_classes: continue
             coord = out_boxes[i]
-            print(coord)
             score = out_scores[i]
             class_ind = int(out_classes[i])
             bbox_color = colors[class_ind]
             bbox_thick = int(0.6 * (image_h + image_w) / 600)
             bbox_mess = '%s: %.2f' % (classes[class_ind], score)
             # print([coord[1], coord[0], coord[3], coord[2]])
-            self.canvas.create_rectangle(coord[1], coord[0], coord[3], coord[2], width=bbox_thick, outline=util.rgb_to_hex(bbox_color))
-            self.draw_text(bbox_mess,[coord[1], coord[0], coord[3], coord[2]])
+            self.canvas.create_rectangle(coord[0], coord[1], coord[2], coord[3], width=bbox_thick, outline=util.rgb_to_hex(bbox_color))
+            self.draw_text(bbox_mess,[coord[0], coord[1], coord[2], coord[3]])
         self.canvas.pack()
 
 

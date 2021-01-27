@@ -39,8 +39,9 @@ class YoloDetector:
 
     def bbox_post_processing(self, bbox, image_h, image_w):
         bbox = bbox[0]
-        bbox[:,0] = bbox[:,0]* image_h
-        bbox[:,1] = bbox[:,1]* image_w
-        bbox[:,2] = bbox[:,2]* image_h
-        bbox[:,3] = bbox[:,3]* image_w
-        return bbox
+        new_bbox = np.zeros(bbox.shape)
+        new_bbox[:,1] = bbox[:,0]* image_h
+        new_bbox[:,0] = bbox[:,1]* image_w
+        new_bbox[:,3] = bbox[:,2]* image_h
+        new_bbox[:,2] = bbox[:,3]* image_w
+        return new_bbox
